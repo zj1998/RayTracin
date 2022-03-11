@@ -23,5 +23,14 @@
     <ClInclude Include="vec.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="hitable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

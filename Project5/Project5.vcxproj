@@ -143,7 +143,10 @@
     <ClCompile Include="源.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="hitable.h" />
+    <ClInclude Include="ray.h" />
     <ClInclude Include="vec.h" />
+    <ClInclude Include="color.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
