@@ -14,14 +14,21 @@ public:
 	double y() const{ return e[1]; }
 	double z() const{ return e[2]; }
 
-	vec3 operator-() { return { -e[0],-e[1] ,-e[2] }; }
+	vec3 operator-() const { return { -e[0],-e[1] ,-e[2] }; }
 	double operator[](int i) const {
 		return e[i];
 	}
-    vec3& operator=(vec3& v) ;
+    
 	double& operator[](int i) {
 		return this->e[i];
 	}
+
+    vec3& operator=(const vec3& v) {
+        this->e[0] = v.e[0];
+        this->e[1] = v.e[1];
+        this->e[2] = v.e[2];
+        return *this;
+    }
     vec3& operator+=(const vec3& v) {
         e[0] += v.e[0];
         e[1] += v.e[1];
@@ -56,12 +63,7 @@ public:
 using point3 = vec3;   // 3D point
 using color = vec3;    // RGB color
 
-inline vec3& vec3::operator=(vec3 &v) {
-    (*this).e[0] = v[0];
-    (*this).e[1] = v[1];
-    (*this).e[2] = v[2];
-    return *this;
-}
+
 inline vec3 operator+(vec3 &v1,vec3 &v2) {
     vec3 sum = v1;
     sum += v2;
