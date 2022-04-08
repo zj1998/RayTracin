@@ -1,7 +1,7 @@
 #pragma once
 #include<cmath>
 #include<iostream>
-
+#include"rtweekend.h"
 
 
 class vec3
@@ -9,7 +9,13 @@ class vec3
 public:
 	vec3():e{0,0,0} {}
 	vec3(double a, double b, double c) :e{ a,b,c } {}
-    
+    inline static vec3 random() {
+        return vec3(random_double(), random_double(), random_double());
+    }
+
+    inline static vec3 random(double min, double max) {
+        return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+    }
 	double x() const{ return e[0]; }
 	double y() const{ return e[1]; }
 	double z() const{ return e[2]; }
