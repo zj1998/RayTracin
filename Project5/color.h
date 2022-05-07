@@ -1,5 +1,5 @@
 #pragma once
-#include "vec.h"
+#include "vec3.h"
 
 void write_color(std::ostream &os, const color &c) {
 	std::cout << static_cast<int>(255.999 * c.x()) << ' '
