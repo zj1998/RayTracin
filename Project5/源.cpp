@@ -5,6 +5,9 @@
 #include "sphere.h"
 #include"material.h"
 #include <iostream>
+#include<thread>
+#include <mutex>
+std::mutex mtx; // ±£»¤counter
 color ray_color(const ray& r, const hittable& world, int depth) {
     hit_record rec;
 
@@ -52,21 +55,172 @@ int main() {
     // Render
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+    std::vector<std::vector<color>> v1(225);
+    std::vector<std::thread>v;
+    for (int k = 0; k < 5; k++) {
+        v.push_back(std::thread([&,k]() {
 
-    for (int j = image_height - 1; j >= 0; --j) {
-        std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
-        for (int i = 0; i < image_width; ++i) {
-            color pixel_color = color(0, 0, 0);
-            for (int s = 0; s < samples_per_pixel;s++) {
-                auto u = (i+random_double()) / (image_width - 1);
-                auto v = (j+random_double())/ (image_height - 1);
-                ray r = cam.get_ray(u, v);
-                pixel_color += ray_color(r, world,10);
- 
-            }
-            write_color(std::cout, pixel_color,samples_per_pixel);
-        }
+            for (int j = image_height - 1-k; j >= 0; j -= 5) {
+                /*std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;*/
+
+                std::vector<color> local_v;
+                for (int i = 0; i < image_width; ++i) {
+
+                    color pixel_color = color(0, 0, 0);
+
+                    for (int s = 0; s < samples_per_pixel; s++) {
+                        auto u = (i + random_double()) / (image_width - 1);
+                        auto v = (j + random_double()) / (image_height - 1);
+                        ray r = cam.get_ray(u, v);
+                        pixel_color += ray_color(r, world, 10);
+
+                    }
+                    local_v.push_back(pixel_color);
+                }
+                mtx.lock();
+                v1[j] = local_v;
+                mtx.unlock();
+
+            }}));
+    
+    
+    
     }
+        
+        //v.push_back(std::thread([&]() {
 
+        //    for (int j = image_height - 2; j >= 0; j -= 5) {
+        //        /*std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;*/
+
+        //        std::vector<color> local_v;
+        //        for (int i = 0; i < image_width; ++i) {
+
+        //            color pixel_color = color(0, 0, 0);
+
+        //            for (int s = 0; s < samples_per_pixel; s++) {
+        //                auto u = (i + random_double()) / (image_width - 1);
+        //                auto v = (j + random_double()) / (image_height - 1);
+        //                ray r = cam.get_ray(u, v);
+        //                pixel_color += ray_color(r, world, 10);
+
+        //            }
+        //            local_v.push_back(pixel_color);
+        //        }
+
+        //        mtx.lock();
+        //        v1[j] = local_v;
+        //        mtx.unlock();
+
+
+        //    }}));
+        //v.push_back(std::thread([&]() {
+
+        //    for (int j = image_height - 3; j >= 0; j -= 5) {
+        //        /*std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;*/
+
+        //        std::vector<color> local_v;
+        //        for (int i = 0; i < image_width; ++i) {
+
+        //            color pixel_color = color(0, 0, 0);
+
+        //            for (int s = 0; s < samples_per_pixel; s++) {
+        //                auto u = (i + random_double()) / (image_width - 1);
+        //                auto v = (j + random_double()) / (image_height - 1);
+        //                ray r = cam.get_ray(u, v);
+        //                pixel_color += ray_color(r, world, 10);
+
+        //            }
+        //            local_v.push_back(pixel_color);
+        //        }
+        //        mtx.lock();
+        //        v1[j] = local_v;
+        //        mtx.unlock();
+
+        //    }}));
+        //
+        //
+        //v.push_back(std::thread([&]() {
+
+        //    for (int j = image_height - 4; j >= 0; j -= 5) {
+        //        /*std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;*/
+
+        //        std::vector<color> local_v;
+        //        for (int i = 0; i < image_width; ++i) {
+
+        //            color pixel_color = color(0, 0, 0);
+
+        //            for (int s = 0; s < samples_per_pixel; s++) {
+        //                auto u = (i + random_double()) / (image_width - 1);
+        //                auto v = (j + random_double()) / (image_height - 1);
+        //                ray r = cam.get_ray(u, v);
+        //                pixel_color += ray_color(r, world, 10);
+
+        //            }
+        //            local_v.push_back(pixel_color);
+        //        }
+        //        mtx.lock();
+        //        v1[j] = local_v;
+        //        mtx.unlock();
+
+        //    }}));
+        //v.push_back(std::thread([&]() {
+
+        //    for (int j = image_height - 5; j >= 0; j -= 5) {
+        //        /*std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;*/
+
+        //        std::vector<color> local_v;
+        //        for (int i = 0; i < image_width; ++i) {
+
+        //            color pixel_color = color(0, 0, 0);
+
+        //            for (int s = 0; s < samples_per_pixel; s++) {
+        //                auto u = (i + random_double()) / (image_width - 1);
+        //                auto v = (j + random_double()) / (image_height - 1);
+        //                ray r = cam.get_ray(u, v);
+        //                pixel_color += ray_color(r, world, 10);
+
+        //            }
+        //            local_v.push_back(pixel_color);
+        //        }
+        //        mtx.lock();
+        //        v1[j] = local_v;
+        //        mtx.unlock();
+
+        //    }}));
+        //v.push_back(std::thread([&]() {
+
+        //    for (int j = image_height - 6; j >= 0; j -= 5) {
+        //        std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
+
+        //        std::vector<color> local_v;
+        //        for (int i = 0; i < image_width; ++i) {
+
+        //            color pixel_color = color(0, 0, 0);
+
+        //            for (int s = 0; s < samples_per_pixel; s++) {
+        //                auto u = (i + random_double()) / (image_width - 1);
+        //                auto v = (j + random_double()) / (image_height - 1);
+        //                ray r = cam.get_ray(u, v);
+        //                pixel_color += ray_color(r, world, 10);
+
+        //            }
+        //            local_v.push_back(pixel_color);
+        //        }
+        //        mtx.lock();
+        //        v1[j] = local_v;
+        //        mtx.unlock();
+
+        //    }}));
+    
+    for (auto& t : v) {
+        t.join();
+    }
+    for (int i = v1.size() - 1; i >= 0;--i) {
+        for (auto& e : v1[i]) {
+            write_color(std::cout, e, samples_per_pixel);
+        }
+    
+    }
+    
     std::cerr << "\nDone.\n";
 }
